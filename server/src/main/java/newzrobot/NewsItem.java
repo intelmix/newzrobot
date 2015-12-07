@@ -1,20 +1,32 @@
 package newzrobot;
 
 public class NewsItem {
-    private final long id;
-    private final String content;
+    private final String id;
+    private final String title;
+    private final String source;
+    private final int timestamp;
 
-    public NewsItem(long id, String content) {
+    public NewsItem(String id, String title, String source, int timestamp) {
         this.id = id;
-        this.content = content;
+        this.title = title;
+        this.source = source;
+        this.timestamp = timestamp;
     }
 
-    public long getId() {
+    public String getId() {
         return this.id;
     }
 
-    public String getContent() {
-        return this.content;
+    public String getTitle() {
+        return this.title;
+    }
+
+    public String getSource() {
+        return this.source;
+    }
+
+    public int getTimestamp() {
+        return this.timestamp;
     }
 }
 
