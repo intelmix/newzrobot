@@ -10,18 +10,17 @@ import java.util.ArrayList;
 
 @RestController
 public class MainController {
-    private static final String template = "HEllo %s";
-    private static final String template2 = "another hello %s";
-    private final AtomicLong counter = new AtomicLong();
-    
-    @RequestMapping("/news")
-    public ArrayList<NewsItem> news(@RequestParam(value="name", defaultValue="world") String name ) {
-        System.out.println("Configured for "+name);
-        
-        ArrayList<NewsItem> result = new ArrayList<NewsItem>();
+    private int counter = 0;
 
-        result.add(new NewsItem(counter.incrementAndGet(), String.format(template, name)));
-        result.add(new NewsItem(counter.incrementAndGet(), String.format(template2, name)));
+    @RequestMapping("/news")
+    public List<NewsItem> news() {
+        System.out.println("Configured for news");
+        
+        List<NewsItem> result = new ArrayList<NewsItem>();
+        counter++;
+
+        result.add(new NewsItem(counter.toString(), "title1", "source1", 10);
+        result.add(new NewsItem(counter.toString(), "title2", "source2", 20);
 
         return result;
     }
