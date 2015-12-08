@@ -20,8 +20,8 @@ public class MainController {
         List<NewsItem> result = new ArrayList<NewsItem>();
         counter++;
 
-        result.add(new NewsItem(Integer.toString(counter), "title1", "source1", 10));
-        result.add(new NewsItem(Integer.toString(counter), "title2", "source2", 20));
+        result.add(new NewsItem("title1", "source1", "http://link"+Integer.toString(counter), 10));
+        result.add(new NewsItem("title2", "source2", "http://link"+Integer.toString(counter), 20));
 
         return result;
     }
