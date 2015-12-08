@@ -20,8 +20,8 @@ public class MainController {
         List<NewsItem> result = new ArrayList<NewsItem>();
         counter++;
 
-        result.add(new NewsItem("title1", "source1", "http://link"+Integer.toString(counter), 10));
-        result.add(new NewsItem("title2", "source2", "http://link"+Integer.toString(counter), 20));
+        result.add(new NewsItem("Along with Trump’s rhetoric, the stakes for 2016 have risen dramatically", "Washington Post", "https://www.washingtonpost.com/politics/along-with-trumps-rhetoric-the-stakes-for-2016-have-risen-dramatically/2015/12/08/43e64592-9dd8-11e5-a3c5-c77f2cc5a43c_story.html", 1123213213));
+        result.add(new NewsItem("San Bernardino shooting: Attackers may have left bomb to kill police, used loan to buy arms", "LA Times", "http://www.latimes.com/local/lanow/la-me-ln-san-bernardino-shooting-attackers-bomb-mainbar-20151208-story.html", 149123321));
 
         return result;
     }
