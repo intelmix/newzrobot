@@ -38,6 +38,7 @@ public class MainController {
         System.out.println("Response received and parsed!");
         System.out.println("id is: "+user.getId());
         System.out.println("name is: "+user.getName());
+        System.out.println("email is: "+user.getEmail());
 
         //Sample response:
         //{
@@ -48,6 +49,7 @@ public class MainController {
         //     "link": "https://plus.google.com/+MahdiMohammadinasab",
         //      "picture": "https://lh3.googleusercontent.com/-SAD9UVfwQZU/AAAAAAAAAAI/AAAAAAAAAMA/r-4abH4SfD8/photo.jpg",
         //       "gender": "male",
+        //       "email" : "dsadsadsA",
         //        "locale": "en"
         //        }
         //}

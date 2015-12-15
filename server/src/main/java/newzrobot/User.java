@@ -9,12 +9,14 @@ public class User {
     private String picture;
     private String gender;
     private String locale;
+    private String email;
+
 
     public User() {
 
     }
 
-    public User(String id, String name, String given_name, String family_name, String link, String picture, String gender, String locale) {
+    /*public User(String id, String name, String given_name, String family_name, String link, String picture, String gender, String locale) {
         this.id = id;
         this.name = name;
         this.given_name = given_name;
@@ -23,7 +25,12 @@ public class User {
         this.picture = picture;
         this.gender = gender;
         this.locale = locale;
+    }*/
+
+    public String getEmail() {
+        return this.email;
     }
+
 
     public String getId() {
         return this.id;
