@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 
-
+//TODO: move this to its own package
 @Entity
 @Table(name = "google_user")
 public class GoogleUser {
@@ -22,14 +22,15 @@ public class GoogleUser {
     private String picture;
     private String gender;
     private String locale;
-    private String access_token;
+    private String auth_token;
+    private String email; 
 
     protected GoogleUser() {
 
     }
 
 
-    public GoogleUser(String id, String name, String given_name, String family_name, String link, String picture, String gender, String locale, String access_token) {
+    public GoogleUser(String id, String name, String given_name, String family_name, String link, String picture, String gender, String locale, String email, String auth_token) {
         this.id = id;
         this.name = name;
         this.given_name = given_name;
@@ -38,7 +39,8 @@ public class GoogleUser {
         this.picture = picture;
         this.gender = gender;
         this.locale = locale;
-        this.access_token = access_token;
+        this.auth_token = auth_token;
+        this.email = email;
     }
 
     public String getId() {
@@ -105,12 +107,20 @@ public class GoogleUser {
         this.locale = locale;
     }
 
-    public String getAccess_token() {
-        return access_token;
+    public String getAuthToken() {
+        return auth_token;
     }
 
-    public void setAccess_token(String access_token) {
-        this.access_token = access_token;
+    public void setAuthToken(String authToken) {
+        this.auth_token = auth_token;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
 

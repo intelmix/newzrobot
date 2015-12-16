@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.slf4j.Logger;
@@ -19,11 +21,15 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+//TODO: better and more consistent logging
 @RestController
 public class MainController {
 
+    @Autowired
+    private GoogleUserRepository userRepository;
+    
     @RequestMapping(value="/register", method = RequestMethod.POST)
-    public String register(@RequestBody AuthRequest req) {
+    public AuthResponse register(@RequestBody AuthRequest req) {
         //remove Bearer: from the beginning of the string
         //access_token = access_token.substring(7);
 
@@ -39,6 +45,16 @@ public class MainController {
         System.out.println("id is: "+user.getId());
         System.out.println("name is: "+user.getName());
         System.out.println("email is: "+user.getEmail());
+        System.out.println("given-name is: "+user.getGivenName());
+        System.out.println("family-name is: "+user.getFamilyName());
+
+        System.out.println("Creating user...");
+
+        GoogleUser gu = new GoogleUser(user.getId(), user.getName(), user.getGivenName(), user.getFamilyName(), 
+                user.getLink(), user.getPicture(), user.getGender(), user.getLocale(), user.getEmail(), access_token);
+        userRepository.save(gu);
+
+
 
         //Sample response:
         //{
@@ -71,7 +87,7 @@ public class MainController {
         
         //now we have to save information to db
 
-        return "true";
+        return new AuthResponse(access_token);
     }
 
     @RequestMapping("/search/{query}")
