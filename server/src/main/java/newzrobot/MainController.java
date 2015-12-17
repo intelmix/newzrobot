@@ -40,6 +40,7 @@ public class MainController {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
         User user = restTemplate.getForObject("https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + access_token, User.class);
+        restTemplate.post
 
         System.out.println("Response received and parsed!");
         System.out.println("id is: "+user.getId());
