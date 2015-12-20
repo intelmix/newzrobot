@@ -4,9 +4,9 @@ public class NewsItem {
     private final String link;
     private final String title;
     private final String source;
-    private final int timestamp;
+    private final long timestamp;
 
-    public NewsItem(String title, String source, String link, int timestamp) {
+    public NewsItem(String title, String source, String link, long timestamp) {
         this.title = title;
         this.source = source;
         this.link = link;
@@ -25,7 +25,7 @@ public class NewsItem {
         return this.source;
     }
 
-    public int getTimestamp() {
+    public long getTimestamp() {
         return this.timestamp;
     }
 }

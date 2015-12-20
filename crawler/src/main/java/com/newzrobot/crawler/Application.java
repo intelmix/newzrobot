@@ -18,8 +18,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import redis.clients.jedis.Jedis;
 
+
+//make this class more tidy, not everything should be statis, move almost all code to their respective classes
 public class Application {
+    static Jedis jedis;
 
     //TODO: better logging for info, warn and exceptions
     //TODO: use LogEntries if it does not need much overhead
@@ -30,6 +34,7 @@ public class Application {
                MongoClient mongo = new MongoClient( "localhost" , 27017 );
                DB db = mongo.getDB("data"); 
                DBCollection feed_entry = db.getCollection("feed_entry");
+               jedis = new Jedis("localhost");
 
                Class.forName("com.mysql.jdbc.Driver").newInstance();
                Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/newzrobot?", "root", "ykstr_thisisroot_#$%_");
@@ -44,25 +49,18 @@ public class Application {
 
                    String link = rs.getString("uri");
 
-                   saveFeed(feed_entry, link);
-
+                   saveFeed(feed_entry, link, rs.getString("guid"));
 
                    System.out.println(title);
                }
 
                stmt.close();
 
-
                System.out.println("Done!");
-
-
-
-
-
 
     }
 
-    public static void saveFeed(DBCollection feed_entry, String link) throws com.rometools.rome.io.FeedException, java.io.IOException {
+    public static void saveFeed(DBCollection feed_entry, String link, String source_id) throws com.rometools.rome.io.FeedException, java.io.IOException {
 
         //URL feedUrl = new URL("https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&output=rss");
         URL feedUrl = new URL(link);
@@ -76,7 +74,6 @@ public class Application {
         // Get the entry items...
         for (SyndEntry entry : (List<SyndEntry>) feed.getEntries()) {
             counter++;
-            if ( counter > 3) break;
 
             String title = entry.getTitle();
             String uri = entry.getUri();
@@ -89,6 +86,8 @@ public class Application {
             document.put("t", title);
             document.put("u", uri);
             document.put("e", epoch);
+            document.put("s", source_id);
+            document.put("x", 0);
             feed_entry.insert(document);
 
             System.out.println("GUID: " + _id);
@@ -99,6 +98,13 @@ public class Application {
 
             System.out.println("");
         }
+
+        String current = jedis.get("news_count");
+        if ( current == null ) current = "0";
+        Integer news_count = Integer.valueOf(current);
+        news_count += counter;
+
+        jedis.set("news_count", news_count.toString());
     }
 
 

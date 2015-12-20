@@ -3,11 +3,13 @@ package newzrobot;
 import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,14 @@ import java.util.List;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
+import redis.clients.jedis.Jedis;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoException;
 
 //TODO: better and more consistent logging
 @RestController
@@ -40,7 +50,6 @@ public class MainController {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
         User user = restTemplate.getForObject("https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + access_token, User.class);
-        restTemplate.post
 
         System.out.println("Response received and parsed!");
         System.out.println("id is: "+user.getId());
@@ -106,56 +115,48 @@ public class MainController {
         return result;
     }
 
+    @RequestMapping("/newsCount")
+    public ResponseEntity<String> newsCount() {
+        System.out.println("Request received for news count");
+        List<NewsItem> result = new ArrayList<NewsItem>();
+        DBCursor cursor = null;
+
+        Jedis jedis = new Jedis("localhost");
+
+        String count = jedis.get("news_count");
+
+        if ( count == null ) count = "0";
+
+        return new ResponseEntity<String>(String.valueOf(count), HttpStatus.OK);
+    }
+
     @RequestMapping("/news")
     public List<NewsItem> news() {
         System.out.println("Request received for news");
-
         List<NewsItem> result = new ArrayList<NewsItem>();
+        DBCursor cursor = null;
 
-        result.add(new NewsItem("Along with Trump’s rhetoric, the stakes for 2016 have risen dramatically", "Washington Post", "https://www.washingtonpost.com/politics/along-with-trumps-rhetoric-the-stakes-for-2016-have-risen-dramatically/2015/12/08/43e64592-9dd8-11e5-a3c5-c77f2cc5a43c_story.html", 1123213213));
-        result.add(new NewsItem("San Bernardino shooting: Attackers may have left bomb to kill police, used loan to buy arms", "LA Times", "http://www.latimes.com/local/lanow/la-me-ln-san-bernardino-shooting-attackers-bomb-mainbar-20151208-story.html", 149123321));
-        result.add(new NewsItem("Yahoo Shelves Plans to Spin Off Alibaba Stake", "WSJ", "http://www.wsj.com/articles/yahoo-shelves-plans-to-spin-off-alibaba-stake-1449662720", 149123121));
-        result.add(new NewsItem("Drop in futures use signals Fed rate level uncertainties", "Reuters", "http://www.reuters.com/article/usa-fed-markets-futures-idUSL1N13Y23H20151209#2GOBJX3CQroeeU36.97", 149423321));
-        result.add(new NewsItem("Middle-class families, pillar of the American dream, are no longer in the majority, study finds", "LA Times", "http://www.latimes.com/nation/la-fi-middle-class-erosion-20151209-story.html", 149123921));
+        try {
+            MongoClient mongo = new MongoClient( "localhost" , 27017 );
+            DB db = mongo.getDB("data"); 
+            DBCollection feed_entry = db.getCollection("feed_entry");
 
-        result.add(new NewsItem("Along with Trump’s rhetoric, the stakes for 2016 have risen dramatically", "Washington Post", "https://www.washingtonpost.com/politics/along-with-trumps-rhetoric-the-stakes-for-2016-have-risen-dramatically/2015/12/08/43e64592-9dd8-11e5-a3c5-c77f2cc5a43c_story.html", 1123213213));
-        result.add(new NewsItem("Along with Trump’s rhetoric, the stakes for 2016 have risen dramatically", "Washington Post", "https://www.washingtonpost.com/politics/along-with-trumps-rhetoric-the-stakes-for-2016-have-risen-dramatically/2015/12/08/43e64592-9dd8-11e5-a3c5-c77f2cc5a43c_story.html", 1123213213));
-        result.add(new NewsItem("Along with Trump’s rhetoric, the stakes for 2016 have risen dramatically", "Washington Post", "https://www.washingtonpost.com/politics/along-with-trumps-rhetoric-the-stakes-for-2016-have-risen-dramatically/2015/12/08/43e64592-9dd8-11e5-a3c5-c77f2cc5a43c_story.html", 1123213213));
-        result.add(new NewsItem("Along with Trump’s rhetoric, the stakes for 2016 have risen dramatically", "Washington Post", "https://www.washingtonpost.com/politics/along-with-trumps-rhetoric-the-stakes-for-2016-have-risen-dramatically/2015/12/08/43e64592-9dd8-11e5-a3c5-c77f2cc5a43c_story.html", 1123213213));
-        result.add(new NewsItem("Along with Trump’s rhetoric, the stakes for 2016 have risen dramatically", "Washington Post", "https://www.washingtonpost.com/politics/along-with-trumps-rhetoric-the-stakes-for-2016-have-risen-dramatically/2015/12/08/43e64592-9dd8-11e5-a3c5-c77f2cc5a43c_story.html", 1123213213));
-        result.add(new NewsItem("San Bernardino shooting: Attackers may have left bomb to kill police, used loan to buy arms", "LA Times", "http://www.latimes.com/local/lanow/la-me-ln-san-bernardino-shooting-attackers-bomb-mainbar-20151208-story.html", 149123321));
-        result.add(new NewsItem("Yahoo Shelves Plans to Spin Off Alibaba Stake", "WSJ", "http://www.wsj.com/articles/yahoo-shelves-plans-to-spin-off-alibaba-stake-1449662720", 149123121));
-        result.add(new NewsItem("Drop in futures use signals Fed rate level uncertainties", "Reuters", "http://www.reuters.com/article/usa-fed-markets-futures-idUSL1N13Y23H20151209#2GOBJX3CQroeeU36.97", 149423321));
-        result.add(new NewsItem("Middle-class families, pillar of the American dream, are no longer in the majority, study finds", "LA Times", "http://www.latimes.com/nation/la-fi-middle-class-erosion-20151209-story.html", 149123921));
-        result.add(new NewsItem("San Bernardino shooting: Attackers may have left bomb to kill police, used loan to buy arms", "LA Times", "http://www.latimes.com/local/lanow/la-me-ln-san-bernardino-shooting-attackers-bomb-mainbar-20151208-story.html", 149123321));
-        result.add(new NewsItem("Yahoo Shelves Plans to Spin Off Alibaba Stake", "WSJ", "http://www.wsj.com/articles/yahoo-shelves-plans-to-spin-off-alibaba-stake-1449662720", 149123121));
-        result.add(new NewsItem("Drop in futures use signals Fed rate level uncertainties", "Reuters", "http://www.reuters.com/article/usa-fed-markets-futures-idUSL1N13Y23H20151209#2GOBJX3CQroeeU36.97", 149423321));
-        result.add(new NewsItem("Middle-class families, pillar of the American dream, are no longer in the majority, study finds", "LA Times", "http://www.latimes.com/nation/la-fi-middle-class-erosion-20151209-story.html", 149123921));
-        result.add(new NewsItem("San Bernardino shooting: Attackers may have left bomb to kill police, used loan to buy arms", "LA Times", "http://www.latimes.com/local/lanow/la-me-ln-san-bernardino-shooting-attackers-bomb-mainbar-20151208-story.html", 149123321));
-        result.add(new NewsItem("Yahoo Shelves Plans to Spin Off Alibaba Stake", "WSJ", "http://www.wsj.com/articles/yahoo-shelves-plans-to-spin-off-alibaba-stake-1449662720", 149123121));
-        result.add(new NewsItem("Drop in futures use signals Fed rate level uncertainties", "Reuters", "http://www.reuters.com/article/usa-fed-markets-futures-idUSL1N13Y23H20151209#2GOBJX3CQroeeU36.97", 149423321));
-        result.add(new NewsItem("Middle-class families, pillar of the American dream, are no longer in the majority, study finds", "LA Times", "http://www.latimes.com/nation/la-fi-middle-class-erosion-20151209-story.html", 149123921));
-        result.add(new NewsItem("San Bernardino shooting: Attackers may have left bomb to kill police, used loan to buy arms", "LA Times", "http://www.latimes.com/local/lanow/la-me-ln-san-bernardino-shooting-attackers-bomb-mainbar-20151208-story.html", 149123321));
-        result.add(new NewsItem("Yahoo Shelves Plans to Spin Off Alibaba Stake", "WSJ", "http://www.wsj.com/articles/yahoo-shelves-plans-to-spin-off-alibaba-stake-1449662720", 149123121));
-        result.add(new NewsItem("Drop in futures use signals Fed rate level uncertainties", "Reuters", "http://www.reuters.com/article/usa-fed-markets-futures-idUSL1N13Y23H20151209#2GOBJX3CQroeeU36.97", 149423321));
-        result.add(new NewsItem("Middle-class families, pillar of the American dream, are no longer in the majority, study finds", "LA Times", "http://www.latimes.com/nation/la-fi-middle-class-erosion-20151209-story.html", 149123921));
-        result.add(new NewsItem("San Bernardino shooting: Attackers may have left bomb to kill police, used loan to buy arms", "LA Times", "http://www.latimes.com/local/lanow/la-me-ln-san-bernardino-shooting-attackers-bomb-mainbar-20151208-story.html", 149123321));
-        result.add(new NewsItem("Yahoo Shelves Plans to Spin Off Alibaba Stake", "WSJ", "http://www.wsj.com/articles/yahoo-shelves-plans-to-spin-off-alibaba-stake-1449662720", 149123121));
-        result.add(new NewsItem("Drop in futures use signals Fed rate level uncertainties", "Reuters", "http://www.reuters.com/article/usa-fed-markets-futures-idUSL1N13Y23H20151209#2GOBJX3CQroeeU36.97", 149423321));
-        result.add(new NewsItem("Middle-class families, pillar of the American dream, are no longer in the majority, study finds", "LA Times", "http://www.latimes.com/nation/la-fi-middle-class-erosion-20151209-story.html", 149123921));
-        result.add(new NewsItem("Middle-class families, pillar of the American dream, are no longer in the majority, study finds", "LA Times", "http://www.latimes.com/nation/la-fi-middle-class-erosion-20151209-story.html", 149123921));
-        result.add(new NewsItem("San Bernardino shooting: Attackers may have left bomb to kill police, used loan to buy arms", "LA Times", "http://www.latimes.com/local/lanow/la-me-ln-san-bernardino-shooting-attackers-bomb-mainbar-20151208-story.html", 149123321));
-        result.add(new NewsItem("Yahoo Shelves Plans to Spin Off Alibaba Stake", "WSJ", "http://www.wsj.com/articles/yahoo-shelves-plans-to-spin-off-alibaba-stake-1449662720", 149123121));
-        result.add(new NewsItem("Drop in futures use signals Fed rate level uncertainties", "Reuters", "http://www.reuters.com/article/usa-fed-markets-futures-idUSL1N13Y23H20151209#2GOBJX3CQroeeU36.97", 149423321));
-        result.add(new NewsItem("Middle-class families, pillar of the American dream, are no longer in the majority, study finds", "LA Times", "http://www.latimes.com/nation/la-fi-middle-class-erosion-20151209-story.html", 149123921));
-        result.add(new NewsItem("San Bernardino shooting: Attackers may have left bomb to kill police, used loan to buy arms", "LA Times", "http://www.latimes.com/local/lanow/la-me-ln-san-bernardino-shooting-attackers-bomb-mainbar-20151208-story.html", 149123321));
-        result.add(new NewsItem("Yahoo Shelves Plans to Spin Off Alibaba Stake", "WSJ", "http://www.wsj.com/articles/yahoo-shelves-plans-to-spin-off-alibaba-stake-1449662720", 149123121));
-        result.add(new NewsItem("Drop in futures use signals Fed rate level uncertainties", "Reuters", "http://www.reuters.com/article/usa-fed-markets-futures-idUSL1N13Y23H20151209#2GOBJX3CQroeeU36.97", 149423321));
-        result.add(new NewsItem("Middle-class families, pillar of the American dream, are no longer in the majority, study finds", "LA Times", "http://www.latimes.com/nation/la-fi-middle-class-erosion-20151209-story.html", 149123921));
-        result.add(new NewsItem("San Bernardino shooting: Attackers may have left bomb to kill police, used loan to buy arms", "LA Times", "http://www.latimes.com/local/lanow/la-me-ln-san-bernardino-shooting-attackers-bomb-mainbar-20151208-story.html", 149123321));
-        result.add(new NewsItem("Yahoo Shelves Plans to Spin Off Alibaba Stake", "WSJ", "http://www.wsj.com/articles/yahoo-shelves-plans-to-spin-off-alibaba-stake-1449662720", 149123121));
-        result.add(new NewsItem("Drop in futures use signals Fed rate level uncertainties", "Reuters", "http://www.reuters.com/article/usa-fed-markets-futures-idUSL1N13Y23H20151209#2GOBJX3CQroeeU36.97", 149423321));
-        result.add(new NewsItem("Middle-class families, pillar of the American dream, are no longer in the majority, study finds", "LA Times", "http://www.latimes.com/nation/la-fi-middle-class-erosion-20151209-story.html", 149123921));
+            cursor = feed_entry.find();
+            int counter = 0;
+            while(cursor.hasNext() && counter < 10) {
+                counter++;
+
+                BasicDBObject doc = (BasicDBObject)cursor.next();
+                NewsItem ni = new NewsItem(doc.getString("t"), doc.getString("s"), doc.getString("u"), doc.getLong("e"));
+
+                result.add(ni);
+            }
+        } catch(java.net.UnknownHostException ex) {
+            System.out.println("unknown host exception");
+        } finally {
+            if(cursor != null) cursor.close();
+        }
+
         return result;
     }
 
