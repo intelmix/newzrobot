@@ -13,37 +13,59 @@ import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
 import java.security.MessageDigest;
-
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
 
 public class Application {
 
     //TODO: better logging for info, warn and exceptions
     //TODO: use LogEntries if it does not need much overhead
     //TODO: Move all moving parts to a config filec
-    public static void main(String[] args) throws java.net.UnknownHostException,java.net.MalformedURLException,java.io.IOException, com.rometools.rome.io.FeedException  {
+    public static void main(String[] args) throws java.lang.ClassNotFoundException,java.lang.InstantiationException, java.lang.IllegalAccessException,
+           java.sql.SQLException, java.net.UnknownHostException,java.net.MalformedURLException,java.io.IOException, com.rometools.rome.io.FeedException  {
 
-        /*                          List<String> dbs = mongo.getDatabaseNames();
-                  for(String db : dbs){
-                  System.out.println("Database: " + db);
+               MongoClient mongo = new MongoClient( "localhost" , 27017 );
+               DB db = mongo.getDB("data"); 
+               DBCollection feed_entry = db.getCollection("feed_entry");
 
-                  }
+               Class.forName("com.mysql.jdbc.Driver").newInstance();
+               Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/newzrobot?", "root", "ykstr_thisisroot_#$%_");
+               Statement stmt = null;
+               ResultSet rs = null;
 
-                  DB db = mongo.getDB("data"); 
-                  DBCollection table = db.getCollection("user");
+               stmt = conn.createStatement();
+               rs = stmt.executeQuery("SELECT * FROM feed_source");
 
-                  BasicDBObject document = new BasicDBObject();
-                  document.put("name", "mkyong");
-                  document.put("age", 30);
-                  table.insert(document);
+               while (rs.next()) {
+                   String title = rs.getString("title");
 
-                  return;
-                  */
-        MongoClient mongo = new MongoClient( "localhost" , 27017 );
-        DB db = mongo.getDB("data"); 
-        DBCollection feed_entry = db.getCollection("feed_entry");
+                   String link = rs.getString("uri");
+
+                   saveFeed(feed_entry, link);
+
+
+                   System.out.println(title);
+               }
+
+               stmt.close();
+
+
+               System.out.println("Done!");
+
+
+
+
+
+
+    }
+
+    public static void saveFeed(DBCollection feed_entry, String link) throws com.rometools.rome.io.FeedException, java.io.IOException {
 
         //URL feedUrl = new URL("https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&output=rss");
-        URL feedUrl = new URL("http://www.latimes.com/rss2.0.xml");
+        URL feedUrl = new URL(link);
 
         SyndFeedInput input = new SyndFeedInput();
         SyndFeed feed = input.build(new XmlReader(feedUrl));
@@ -77,9 +99,9 @@ public class Application {
 
             System.out.println("");
         }
-
-        System.out.println("Done!");
     }
+
+
 
     public static String md5(String base) {
         try{
