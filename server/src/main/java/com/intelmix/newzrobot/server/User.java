@@ -1,4 +1,4 @@
-package newzrobot;
+package com.intelmix.newzrobot.server;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -22,17 +22,6 @@ public class User {
     public User() {
 
     }
-
-    /*public User(String id, String name, String given_name, String family_name, String link, String picture, String gender, String locale) {
-        this.id = id;
-        this.name = name;
-        this.given_name = given_name;
-        this.family_name = family_name;
-        this.link = link;
-        this.picture = picture;
-        this.gender = gender;
-        this.locale = locale;
-    }*/
 
     public String getEmail() {
         return this.email;

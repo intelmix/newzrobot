@@ -1,4 +1,4 @@
-package newzrobot;
+package com.intelmix.newzrobot.server;
 
 //TODO: fix package names and use a better dir structure
 

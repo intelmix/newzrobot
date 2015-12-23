@@ -1,4 +1,4 @@
-package newzrobot;
+package com.intelmix.newzrobot.server;
 
 public class AuthRequest {
     private String token;

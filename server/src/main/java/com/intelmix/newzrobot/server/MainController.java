@@ -1,4 +1,4 @@
-package newzrobot;
+package com.intelmix.newzrobot.server;
 
 import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,38 +31,27 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
 
-//TODO: better and more consistent logging
 @RestController
 public class MainController {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass()); 
 
     @Autowired
     private GoogleUserRepository userRepository;
     
     @RequestMapping(value="/register", method = RequestMethod.POST)
     public AuthResponse register(@RequestBody AuthRequest req) {
-        //remove Bearer: from the beginning of the string
-        //access_token = access_token.substring(7);
-
         String access_token = req.getToken();
         
-        System.out.println("Register request received: "+access_token);
+        logger.info("Register request received: "+access_token);
 
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
         User user = restTemplate.getForObject("https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + access_token, User.class);
 
-        System.out.println("Response received and parsed!");
-        System.out.println("id is: "+user.getId());
-        System.out.println("name is: "+user.getName());
-        System.out.println("email is: "+user.getEmail());
-        System.out.println("given-name is: "+user.getGivenName());
-        System.out.println("family-name is: "+user.getFamilyName());
-
-        System.out.println("Creating user...");
-
         GoogleUser gu = new GoogleUser(user.getId(), user.getName(), user.getGivenName(), user.getFamilyName(), 
                 user.getLink(), user.getPicture(), user.getGender(), user.getLocale(), user.getEmail(), access_token);
         userRepository.save(gu);
+
 
 
 
@@ -102,7 +91,8 @@ public class MainController {
 
     @RequestMapping("/search/{query}")
     public List<NewsItem> search(@PathVariable("query") String query) {
-        System.out.println("Request received for search: "+query);
+        logger.info("Request received for search: "+query);
+
         List<NewsItem> allNews = news();
         List<NewsItem> result = new ArrayList<NewsItem>();
 
@@ -117,7 +107,8 @@ public class MainController {
 
     @RequestMapping("/newsCount")
     public ResponseEntity<String> newsCount() {
-        System.out.println("Request received for news count");
+        logger.info("Request received for news count");
+        
         List<NewsItem> result = new ArrayList<NewsItem>();
         DBCursor cursor = null;
 
@@ -132,7 +123,8 @@ public class MainController {
 
     @RequestMapping("/news")
     public List<NewsItem> news() {
-        System.out.println("Request received for news");
+        logger.info("Request received for news");
+
         List<NewsItem> result = new ArrayList<NewsItem>();
         DBCursor cursor = null;
 
@@ -152,7 +144,7 @@ public class MainController {
                 result.add(ni);
             }
         } catch(java.net.UnknownHostException ex) {
-            System.out.println("unknown host exception");
+            logger.error("unknown host exception: "+ex.getMessage());
         } finally {
             if(cursor != null) cursor.close();
         }

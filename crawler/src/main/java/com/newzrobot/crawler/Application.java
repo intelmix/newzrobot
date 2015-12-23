@@ -1,4 +1,4 @@
-package com.newzrobot.crawler;
+package com.intelmix.newzrobot.crawler;
 //TODO: change package names to include intelmix
 
 import com.rometools.rome.io.*;
@@ -21,7 +21,7 @@ import java.sql.ResultSet;
 import redis.clients.jedis.Jedis;
 
 
-//make this class more tidy, not everything should be statis, move almost all code to their respective classes
+//TODO: make this class more tidy, not everything should be statis, move almost all code to their respective classes
 public class Application {
     static Jedis jedis;
 
