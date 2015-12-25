@@ -1,4 +1,4 @@
-package com.intelmix.newzrobot.server;
+package com.intelmix.newzrobot.server.data;
 
 public class NewsItem {
     private final String link;

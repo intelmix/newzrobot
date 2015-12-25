@@ -1,4 +1,4 @@
-package com.intelmix.newzrobot.server;
+package com.intelmix.newzrobot.server.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

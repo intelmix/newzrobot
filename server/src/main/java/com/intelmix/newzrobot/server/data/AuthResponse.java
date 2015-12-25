@@ -1,4 +1,4 @@
-package com.intelmix.newzrobot.server;
+package com.intelmix.newzrobot.server.data;
 
 //TODO: merge this and request
 public class AuthResponse {

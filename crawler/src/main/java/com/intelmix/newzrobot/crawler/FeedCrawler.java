@@ -49,17 +49,18 @@ public class FeedCrawler {
     @Autowired
     private Environment env;
 
-    @Value("${token}")
-    private String token;
+    @Value("${mongodb.server}")
+    private String mongodbServer;
+
+    @Value("${mongodb.port}")
+    private int mongodbPort;
 
     public void doCrawl() {
 
         try {
             logger.info("begin of run");
 
-            logger.info("token is " + token);
-
-            MongoClient mongo = new MongoClient( "localhost" , 27017 );
+            MongoClient mongo = new MongoClient( mongodbServer , mongodbPort );
             DB db = mongo.getDB("data"); 
             DBCollection feed_entry = db.getCollection("feed_entry");
             Jedis jedis = new Jedis("localhost");
@@ -99,10 +100,10 @@ public class FeedCrawler {
 
     }
 
-
-    public long saveFeed(DBCollection feed_entry, String link, String source_id) throws com.rometools.rome.io.FeedException, java.io.IOException {
-
-        //URL feedUrl = new URL("https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&output=rss");
+    /**
+     * Saves items of the given RSS feed into MongoDB. 
+     */
+    private long saveFeed(DBCollection feed_entry, String link, String source_id) throws com.rometools.rome.io.FeedException, java.io.IOException {
         URL feedUrl = new URL(link);
 
         SyndFeedInput input = new SyndFeedInput();
@@ -129,20 +130,17 @@ public class FeedCrawler {
             document.put("s", source_id);
             document.put("x", 0);
             feed_entry.insert(document);
-
-            logger.info("GUID: " + _id);
-            logger.info("Title: " + title);
-            logger.info("Unique Identifier: " + uri);
-            logger.info("Published Date: " + epoch);
-
-
-            logger.info("");
         }
+
+        logger.info(String.format("%d feed items saved into database (for %s).", counter, link));
 
         return counter;
     }
 
-    public String md5(String base) {
+    /**
+     * Calculates Hash of the given string. This hash will be used to detect duplicate news items
+     */
+    private String md5(String base) {
         try {
             MessageDigest digest = MessageDigest.getInstance("MD5");
             byte[] hash = digest.digest(base.getBytes("UTF-8"));

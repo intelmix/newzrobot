@@ -14,11 +14,9 @@ import org.springframework.core.env.Environment;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
 
-//TODO: make this class more tidy, not everything should be statis, move almost all code to their respective classes
 @SpringBootApplication(exclude = MongoAutoConfiguration.class)
 public class Application implements CommandLineRunner {
     private final Logger logger = LoggerFactory.getLogger(this.getClass()); 
-
 
     @Autowired
     private FeedCrawler crawler;
@@ -36,7 +34,6 @@ public class Application implements CommandLineRunner {
 
     //TODO: better logging for info, warn and exceptions
     //TODO: use LogEntries if it does not need much overhead
-    //TODO: Move all moving parts to a config filec
     @Override
     public void run(String... args) {
         crawler.doCrawl();

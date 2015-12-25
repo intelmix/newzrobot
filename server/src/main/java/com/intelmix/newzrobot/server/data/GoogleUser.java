@@ -1,6 +1,4 @@
-package com.intelmix.newzrobot.server;
-
-//TODO: fix package names and use a better dir structure
+package com.intelmix.newzrobot.server.data;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -28,7 +26,6 @@ public class GoogleUser {
     protected GoogleUser() {
 
     }
-
 
     public GoogleUser(String id, String name, String given_name, String family_name, String link, String picture, String gender, String locale, String email, String auth_token) {
         this.id = id;

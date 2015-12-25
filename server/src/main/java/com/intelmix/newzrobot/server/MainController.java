@@ -30,6 +30,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
+import com.intelmix.newzrobot.server.data.*;
 
 @RestController
 public class MainController {
@@ -51,9 +52,6 @@ public class MainController {
         GoogleUser gu = new GoogleUser(user.getId(), user.getName(), user.getGivenName(), user.getFamilyName(), 
                 user.getLink(), user.getPicture(), user.getGender(), user.getLocale(), user.getEmail(), access_token);
         userRepository.save(gu);
-
-
-
 
         //Sample response:
         //{
