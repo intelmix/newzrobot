@@ -39,8 +39,11 @@ public class MainController {
     @Autowired
     private GoogleUserRepository userRepository;
     
-    @RequestMapping(value="/register", method = RequestMethod.POST)
-    public AuthResponse register(@RequestBody AuthRequest req) {
+    /** 
+     * Login an existing user or register a new user.
+     */
+    @RequestMapping(value="/auth", method = RequestMethod.POST)
+    public AuthResponse authenticate(@RequestBody AuthRequest req) {
         String access_token = req.getToken();
         
         logger.info("Register request received: "+access_token);
@@ -83,7 +86,6 @@ public class MainController {
         
         
         //now we have to save information to db
-
         return new AuthResponse(access_token);
     }
 
