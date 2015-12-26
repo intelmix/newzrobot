@@ -1,0 +1,7 @@
+feeds:
+    LAT:
+        uri: http://www.latimes.com/rss2.0.xml
+        title: LA Times
+    NYT:
+        uri: http://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml
+        title: New York Times

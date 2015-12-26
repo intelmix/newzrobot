@@ -3,8 +3,7 @@ package com.intelmix.newzrobot.crawler;
 import com.rometools.rome.io.*;
 import com.rometools.rome.feed.synd.*;
 import java.net.URL;
-import java.util.List;
-import java.util.Date;
+import java.util.*;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -12,11 +11,6 @@ import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
 import java.security.MessageDigest;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.ResultSet;
 import redis.clients.jedis.Jedis;
 
 import org.slf4j.Logger;
@@ -44,6 +38,9 @@ public class FeedCrawler {
     private final Logger logger = LoggerFactory.getLogger(this.getClass()); 
 
     @Autowired
+    private FeedConfig cfg;
+
+    @Autowired
     private ApplicationContext appContext;
 
     @Autowired
@@ -65,21 +62,13 @@ public class FeedCrawler {
             DBCollection feed_entry = db.getCollection("feed_entry");
             Jedis jedis = new Jedis("localhost");
 
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/newzrobot?", "root", "ykstr_thisisroot_#$%_");
-            Statement stmt = null;
-            ResultSet rs = null;
+            Set<String> feedIds = cfg.getFeedIds();
 
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM feed_source");
+            for(String id: feedIds) {
+                String link = cfg.getFeeds().get(id).get("uri");
+                String title = cfg.getFeeds().get(id).get("title");
 
-            while (rs.next()) {
-                String title = rs.getString("title");
-
-                String link = rs.getString("uri");
-
-                long readCount = saveFeed(feed_entry, link, rs.getString("guid"));
-                
+                long readCount = saveFeed(feed_entry, link, id);
 
                 String current = jedis.get("news_count");
                 if ( current == null ) current = "0";
@@ -90,8 +79,6 @@ public class FeedCrawler {
                 logger.info(title);
             }
 
-            stmt.close();
-
             logger.info("Done!"); 
         } 
         catch (Exception e) {
@@ -99,6 +86,7 @@ public class FeedCrawler {
         }
 
     }
+
 
     /**
      * Saves items of the given RSS feed into MongoDB. 
@@ -114,7 +102,6 @@ public class FeedCrawler {
 
         // Get the entry items...
         for (SyndEntry entry : feed.getEntries()) {
-            counter++;
 
             String title = entry.getTitle();
             String uri = entry.getUri();
@@ -122,14 +109,19 @@ public class FeedCrawler {
             long epoch = date.getTime();
             String _id = md5(title + String.valueOf(epoch) + uri);
 
-            BasicDBObject document = new BasicDBObject();
-            document.put("_id", _id);
-            document.put("t", title);
-            document.put("u", uri);
-            document.put("e", epoch);
-            document.put("s", source_id);
-            document.put("x", 0);
-            feed_entry.insert(document);
+            //check for duplicate id
+            BasicDBObject query = new BasicDBObject("_id", _id);
+            if ( feed_entry.findOne(query) == null ) {
+                BasicDBObject document = new BasicDBObject();
+                document.put("_id", _id);
+                document.put("t", title);
+                document.put("u", uri);
+                document.put("e", epoch);
+                document.put("s", source_id);
+                document.put("x", 0);
+                feed_entry.insert(document);
+                counter++;
+            }
         }
 
         logger.info(String.format("%d feed items saved into database (for %s).", counter, link));

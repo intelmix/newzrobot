@@ -43,7 +43,7 @@ public class MainController {
      * Login an existing user or register a new user.
      */
     @RequestMapping(value="/auth", method = RequestMethod.POST)
-    public AuthResponse authenticate(@RequestBody AuthRequest req) {
+    public AuthResponse auth(@RequestBody AuthRequest req) {
         String access_token = req.getToken();
         
         logger.info("Register request received: "+access_token);

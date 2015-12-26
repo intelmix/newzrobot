@@ -7,7 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 
-//TODO: move this to its own package
+/** 
+ * This class represents result of a Google API call.
+ */
 @Entity
 @Table(name = "google_user")
 public class GoogleUser {
