@@ -65,6 +65,7 @@ public class MainController {
         logger.info("Exists? "+String.valueOf(exists));
 
         //TODO: check validity of this token
+        //Here we create/update user information in Redis
         redisUser.initialize(user);
 
         //TODO: replace usage of google access token with my own token
@@ -157,7 +158,7 @@ public class MainController {
                 counter++;
 
                 BasicDBObject doc = (BasicDBObject)cursor.next();
-                NewsItem ni = new NewsItem(doc.getString("t"), doc.getString("s"), doc.getString("u"), doc.getLong("e"));
+                NewsItem ni = new NewsItem(doc.getString("txt"), doc.getString("src"), doc.getString("uri"), doc.getLong("epo"));
 
                 result.add(ni);
             }

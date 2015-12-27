@@ -114,10 +114,10 @@ public class FeedCrawler {
             if ( feed_entry.findOne(query) == null ) {
                 BasicDBObject document = new BasicDBObject();
                 document.put("_id", _id);
-                document.put("t", title);
-                document.put("u", uri);
-                document.put("e", epoch);
-                document.put("s", source_id);
+                document.put("txt", title);
+                document.put("uri", uri);
+                document.put("epo", epoch);
+                document.put("src", source_id);
                 document.put("x", 0);
                 feed_entry.insert(document);
                 counter++;
