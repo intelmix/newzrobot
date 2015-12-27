@@ -38,7 +38,7 @@ public class FeedCrawler {
     private final Logger logger = LoggerFactory.getLogger(this.getClass()); 
 
     @Autowired
-    private FeedConfig cfg;
+    private FeedConfig1 cfg;
 
     @Autowired
     private ApplicationContext appContext;
