@@ -36,9 +36,6 @@ import com.intelmix.newzrobot.server.data.*;
 public class MainController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass()); 
 
-    @Autowired
-    private GoogleUserRepository userRepository;
-    
     /** 
      * Login an existing user or register a new user.
      */
@@ -50,12 +47,26 @@ public class MainController {
 
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-        User user = restTemplate.getForObject("https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + access_token, User.class);
+        APIUser user = restTemplate.getForObject("https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + access_token, APIUser.class);
 
-        GoogleUser gu = new GoogleUser(user.getId(), user.getName(), user.getGivenName(), user.getFamilyName(), 
+        logger.info("Got API response. name is " + user.getName());
+        logger.info("Got API response. email is " + user.getEmail());
+
+        RedisUser redisUser = new RedisUser(user.getEmail());
+        boolean exists = redisUser.exists();
+
+        logger.info("Exists? "+String.valueOf(exists));
+
+        //TODO: check validity of this token
+        //TODO: also get email from client and double check with API Resuls
+        //TODO: generate and save an authToken
+        //TODO: when user exists, handle creation or re-use of authToken
+        redisUser.initialize(user);
+
+        /*GoogleUser gu = new GoogleUser(user.getId(), user.getName(), user.getGivenName(), user.getFamilyName(), 
                 user.getLink(), user.getPicture(), user.getGender(), user.getLocale(), user.getEmail(), access_token);
         userRepository.save(gu);
-
+*/
         //Sample response:
         //{
         // "id": "108051250147721565705",
