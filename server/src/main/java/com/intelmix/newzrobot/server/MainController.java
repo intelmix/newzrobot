@@ -42,9 +42,11 @@ public class MainController {
     @RequestMapping(value="/auth", method = RequestMethod.POST)
     public AuthResponse auth(@RequestBody AuthRequest req) {
         String access_token = req.getToken();
+        String claimed_email = req.getEmail();
         
-        logger.info("Register request received: "+access_token);
+        logger.info("Register request received: "+access_token+" for email "+claimed_email);
 
+        //TODO: cache this
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
         APIUser user = restTemplate.getForObject("https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + access_token, APIUser.class);
@@ -52,16 +54,21 @@ public class MainController {
         logger.info("Got API response. name is " + user.getName());
         logger.info("Got API response. email is " + user.getEmail());
 
+        if ( !user.getEmail().equals(claimed_email) ) {
+            return new AuthResponse(null, -1);  //email is not valid
+            //TODO: check above code in the client side
+        }
+
         RedisUser redisUser = new RedisUser(user.getEmail());
         boolean exists = redisUser.exists();
 
         logger.info("Exists? "+String.valueOf(exists));
 
         //TODO: check validity of this token
-        //TODO: also get email from client and double check with API Resuls
-        //TODO: generate and save an authToken
-        //TODO: when user exists, handle creation or re-use of authToken
         redisUser.initialize(user);
+
+        //TODO: replace usage of google access token with my own token
+        redisUser.setAuthToken(access_token);
 
         /*GoogleUser gu = new GoogleUser(user.getId(), user.getName(), user.getGivenName(), user.getFamilyName(), 
                 user.getLink(), user.getPicture(), user.getGender(), user.getLocale(), user.getEmail(), access_token);
@@ -97,7 +104,7 @@ public class MainController {
         
         
         //now we have to save information to db
-        return new AuthResponse(access_token);
+        return new AuthResponse(access_token, 0);
     }
 
     @RequestMapping("/search/{query}")
