@@ -28,11 +28,11 @@ public class CappedCache {
     /**
      * Returns items in the cache, sorted by their time.
      */
-    public List<String> getItems() {
+/*    public List<String> getItems() {
         return null;
          
     }
-
+*/
 
 
 }

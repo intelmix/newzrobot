@@ -34,7 +34,7 @@ import com.intelmix.newzrobot.server.data.*;
 
 @RestController
 public class MainController {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass()); 
+    private final Logger1 logger = LoggerFactory.getLogger(this.getClass()); 
 
     /** 
      * Login an existing user or register a new user.
@@ -170,6 +170,7 @@ public class MainController {
 
         return result;
     }
+    
 
 }
 

@@ -33,12 +33,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
 
+//*
+//This ia a feed crawler class which reads a list of feeds rom application configuration file and crawls their feed data
+//stores feed items in MongoDB while storing latest news in Redis
 @Service
 public class FeedCrawler {
     private final Logger logger = LoggerFactory.getLogger(this.getClass()); 
 
     @Autowired
-    private FeedConfig1 cfg;
+    private FeedConfig cfg;
 
     @Autowired
     private ApplicationContext appContext;
