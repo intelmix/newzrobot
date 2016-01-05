@@ -5,3 +5,20 @@ feeds:
     NYT:
         uri: http://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml
         title: New York Times
+    TCC:
+        uri: http://feeds.feedburner.com/TechCrunch/
+        title: TechCrunch
+    TNW:
+        uri: http://feeds2.feedburner.com/thenextweb
+        title: TheNextWeb
+    #hiring ad in source of the page
+    GUA:
+        uri: http://www.theguardian.com/uk/rss
+        title: The Guardian
+    #hiring ad in source of the page
+    IND:
+        uri: http://www.independent.co.uk/rss
+        title: Independent
+    TLG:
+        uri: http://www.telegraph.co.uk/rss
+        title: The Telegraph
