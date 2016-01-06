@@ -55,6 +55,9 @@ public class FeedCrawler {
     @Value("${mongodb.port}")
     private int mongodbPort;
 
+    /**
+     * This method crawls in the feeds specified in application.yaml file and stores results in MongoDB.
+     */
     public void doCrawl() {
 
         try {

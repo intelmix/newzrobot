@@ -37,7 +37,7 @@ public class MainController {
     private final Logger1 logger = LoggerFactory.getLogger(this.getClass()); 
 
     /** 
-     * Login an existing user or register a new user.
+     * Login an existing user or register a new user, returns an authorization token which will be used in future requests.
      */
     @RequestMapping(value="/auth", method = RequestMethod.POST)
     public AuthResponse auth(@RequestBody AuthRequest req) {
