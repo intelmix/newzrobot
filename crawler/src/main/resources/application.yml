@@ -22,3 +22,74 @@ feeds:
     TLG:
         uri: http://www.telegraph.co.uk/rss
         title: The Telegraph
+    GOG:
+        uri: https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&topic=h&num=3&output=rss
+        title: Google News
+    WPP:
+        uri: http://feeds.washingtonpost.com/rss/politics
+        title: Washington Post - Politics
+    WPW:
+        uri: http://feeds.washingtonpost.com/rss/world
+        title: Washingto Post - World
+    TVG:
+        uri: http://www.theverge.com/rss/full.xml
+        title: The Verge
+    DML:
+        uri: http://www.dailymail.co.uk/articles.rss
+        title: Daily Mail
+    DMR:
+        uri: http://www.mirror.co.uk/rss.xml
+        title: Daily Mirror
+    USW:
+        uri: http://rssfeeds.usatoday.com/UsatodaycomWorld-TopStories
+        title: USA Today - World
+    USN:
+        uri: http://rssfeeds.usatoday.com/usatoday-NewsTopStories
+        title: YSA Today - Top
+    WSJ:
+        uri: http://www.wsj.com/xml/rss/3_7085.xml
+        title: WSJ - World News
+    NYD:
+        uri: http://feeds.nydailynews.com/nydnrss
+        title: New York - Daily News
+    NYO:
+        uri: http://nypost.com/feed/
+        title: New York Post
+    CHT:
+        uri: http://www.chicagotribune.com/rss2.0.xml
+        title: ChicagoTribune
+    NWD:
+        uri: http://www.newsday.com/xml/newsday-com-top-stories-1.1324249
+        title: NewsDay
+    CHR:
+        uri: http://www.chron.com/rss/feed/News-270.php
+        title: Chron
+    TSD:
+        uri: http://www.thesundaily.my/rss/latest
+        title: The Sun Daily 
+    GGW:
+        uri: http://feeds.feedburner.com/GoogleforWork
+        title: Google for work blog
+    ENG:
+        uri: http://www.engadget.com/rss.xml
+        title: Engadget
+    ITB:
+        uri: http://www.itbusinessedge.com/feeds
+        title: IT Business edge
+    MSH:
+        uri: http://feeds.mashable.com/Mashable
+        title: Mashable
+    GGO:
+        uri: http://gigaom.com/feed/
+        title: GigaOM
+    ZDN:
+        uri: http://www.zdnet.com/rssfeeds/
+        title: ZDNet
+    RDW:
+        uri: http://readwrite.com/.rss/excerpt/
+        title: ReadWrite
+    TCI:
+        uri: http://www.techinsider.io/rss
+        title: Techinsider
+
+
