@@ -34,9 +34,9 @@ feeds:
     TVG:
         uri: http://www.theverge.com/rss/full.xml
         title: The Verge
-    DML:
-        uri: http://www.dailymail.co.uk/articles.rss
-        title: Daily Mail
+    #DML:
+    #    uri: http://www.dailymail.co.uk/articles.rss
+    #    title: Daily Mail
     DMR:
         uri: http://www.mirror.co.uk/rss.xml
         title: Daily Mirror
@@ -82,9 +82,9 @@ feeds:
     GGO:
         uri: http://gigaom.com/feed/
         title: GigaOM
-    ZDN:
-        uri: http://www.zdnet.com/rssfeeds/
-        title: ZDNet
+    #ZDN:
+    #    uri: http://www.zdnet.com/rssfeeds/
+    #    title: ZDNet
     RDW:
         uri: http://readwrite.com/.rss/excerpt/
         title: ReadWrite

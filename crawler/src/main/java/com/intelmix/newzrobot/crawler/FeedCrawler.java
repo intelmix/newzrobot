@@ -98,12 +98,14 @@ public class FeedCrawler {
      * Saves items of the given RSS feed into MongoDB. 
      */
     private long saveFeed(DBCollection feed_entry, String link, String source_id) throws com.rometools.rome.io.FeedException, java.io.IOException {
+        logger.info("Working on " + source_id);
         URL feedUrl = new URL(link);
 
         SyndFeedInput input = new SyndFeedInput();
         SyndFeed feed = input.build(new XmlReader(feedUrl));
 
-        logger.info("Feed Title: " + feed.getTitle());
+        input.setAllowDoctypes(true);
+
         int counter=0;
 
         // Get the entry items...
