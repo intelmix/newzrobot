@@ -29,10 +29,16 @@ public class Application implements CommandLineRunner {
     private final Logger logger = LoggerFactory.getLogger(this.getClass()); 
 
     @Autowired
+    private FeedConfig cfg;
+
+    @Autowired
     private FeedCrawler crawler;
 
-    @Value("${mongodb.port}")
-    private int mongodbPort;
+    @Value("${server.port}")
+    private String serverPort;
+
+    @Autowired
+    private ApplicationContext context;
 
     public static void main(String[] args) {
         SpringApplication application = new SpringApplication(
@@ -40,18 +46,19 @@ public class Application implements CommandLineRunner {
         application.setWebEnvironment(false);
         application.setBannerMode(Banner.Mode.OFF);
         ApplicationContext ctx =application.run(args);
-        Environment env = ctx.getEnvironment();
-        System.out.println("value of port is " + env.getProperty("server.port"));
+        //Environment env = ctx.getEnvironment();
+        //System.out.println("value of port is " + serverPort);
     }
 
     //TODO: use LogEntries if it does not need much overhead
     @Override
     public void run(String... args) {
-        /*System.out.println("xxxxxmongodb port is: " + String.valueOf(mongodbPort));
+        //System.out.println("xxxxxmongodb port is: " + String.valueOf(mongodbPort));
+        //System.out.println("value of port is " + env.getProperty("server.port"));
 
-        System.out.println("all feed ids:");
-        System.out.println(cfg.getFeedIds());
-        System.out.println(cfg.getFeeds().get("LAT").get("uri"));*/
+        //System.out.println("all feed ids:");
+        //System.out.println(cfg.getFeedIds());
         crawler.doCrawl();
+        //System.out.println("value of port is " + serverPort);
     }
 }

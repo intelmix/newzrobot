@@ -55,14 +55,14 @@ public class FeedCrawler {
     @Value("${mongodb.port}")
     private int mongodbPort;
 
+    private CappedCache cache = new CappedCache(25);
+
     /**
      * This method crawls in the feeds specified in application.yaml file and stores results in MongoDB.
      */
     public void doCrawl() {
 
         try {
-            logger.info("begin of run");
-
             MongoClient mongo = new MongoClient( mongodbServer , mongodbPort );
             DB db = mongo.getDB("data"); 
             DBCollection feed_entry = db.getCollection("feed_entry");
@@ -74,23 +74,27 @@ public class FeedCrawler {
                 String link = cfg.getFeeds().get(id).get("uri");
                 String title = cfg.getFeeds().get(id).get("title");
 
-                long readCount = saveFeed(feed_entry, link, id);
-
-                String current = jedis.get("news_count");
-                if ( current == null ) current = "0";
-                Long news_count = Long.valueOf(current);
-                news_count += readCount;
-                jedis.set("news_count", news_count.toString());
-
-                logger.info(title);
+                long readCount = -1;
+                
+                try {
+                    readCount = saveFeed(feed_entry, link, id);
+                }
+                catch (Exception e) {
+                    logger.error("Error reading feed: "+id+" : "+e.getMessage());
+                }
+                
+                if ( readCount != -1 ) {
+                    String current = jedis.get("news_count");
+                    if ( current == null ) current = "0";
+                    Long news_count = Long.valueOf(current);
+                    news_count += readCount;
+                    jedis.set("news_count", news_count.toString());
+                }
             }
-
-            logger.info("Done!"); 
         } 
         catch (Exception e) {
             logger.error("ERROR " + e.getMessage());
         }
-
     }
 
 
@@ -129,6 +133,8 @@ public class FeedCrawler {
                 document.put("x", 0);
                 feed_entry.insert(document);
                 counter++;
+
+                cache.addItem(epoch, document);
             }
         }
 

@@ -25,7 +25,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Component
-@EnableConfigurationProperties
 @ConfigurationProperties
 public class FeedConfig {
 
@@ -38,5 +37,4 @@ public class FeedConfig {
     public Set<String> getFeedIds() {
          return getFeeds().keySet();
     }
-
 }

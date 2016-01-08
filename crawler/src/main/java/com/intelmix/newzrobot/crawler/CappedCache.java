@@ -1,5 +1,6 @@
 package com.intelmix.newzrobot.crawler;
 
+import java.util.*;
 
 /**
  * This class represents an in-memory cache which stores some data items
@@ -9,7 +10,7 @@ package com.intelmix.newzrobot.crawler;
 public class CappedCache {
     private int size = 0;
 
-//    private 
+    TreeMap<Long, Object> map = new TreeMap<Long, Object>();
 
     public CappedCache(int size) {
          this.size = size;
@@ -19,22 +20,19 @@ public class CappedCache {
      * Add a new item to the cache while preserving its limited size.
      * In case will delete old items
      */
-    public void addItem(long epoch, String json) {
+    public void addItem(long epoch, Object value) {
+        map.put(epoch, value);
 
-
-         
+        //check size of map
+        while ( map.size() > this.size ) map.remove(map.firstKey());
     }
 
     /**
      * Returns items in the cache, sorted by their time.
      */
-/*    public List<String> getItems() {
-        return null;
-         
-    }
-*/
-
-
+    public Collection<Object> getItems() {
+        return map.values();
+   }
 }
 
 
