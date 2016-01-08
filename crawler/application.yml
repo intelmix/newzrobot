@@ -91,5 +91,7 @@ feeds:
     TCI:
         uri: http://www.techinsider.io/rss
         title: Techinsider
-
+    HUF:
+        uri: http://feeds.huffingtonpost.com/c/35496/f/677045/index.rss
+        title: Huffington Post
 
