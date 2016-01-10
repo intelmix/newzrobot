@@ -124,4 +124,6 @@ feeds:
     DIT:
         uri: http://www.digitaltrends.com/feed/
         title: DigitalTrends
-
+    TCR:
+        uri: http://feeds2.feedburner.com/techradar/allnews
+        title: TechRadar
