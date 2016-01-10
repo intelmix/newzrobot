@@ -94,4 +94,34 @@ feeds:
     HUF:
         uri: http://feeds.huffingtonpost.com/c/35496/f/677045/index.rss
         title: Huffington Post
+    FOX:
+        uri: http://feeds.foxnews.com/foxnews/latest
+        title: FoxNews
+    NBC:
+        uri: http://feeds.nbcnews.com/feeds/topstories
+        title: NBC
+    ABC:
+        uri: http://feeds.abcnews.com/abcnews/topstories
+        title: ABC - Top Stories
+    ABI:
+        uri: http://feeds.abcnews.com/abcnews/internationalheadlines
+        title: ABC - International Headlines
+    BBC:
+        uri: http://feeds.bbci.co.uk/news/rss.xml?edition=uk
+        title: BBC - UK
+    BBW:
+        uri: http://feeds.bbci.co.uk/news/world/rss.xml
+        title: BBC - World
+    WIR:
+        uri: http://feeds.wired.com/wired/index
+        title: Wired Top Stories
+    TC2:
+        uri: http://tech.firstpost.com/feed
+        title: Tech2
+    GIZ:
+        uri: http://gizmodo.com/rss
+        title: Gizmodo
+    DIT:
+        uri: http://www.digitaltrends.com/feed/
+        title: DigitalTrends
 
