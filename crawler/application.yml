@@ -127,3 +127,13 @@ feeds:
     TCR:
         uri: http://feeds2.feedburner.com/techradar/allnews
         title: TechRadar
+    ARS:
+        uri: http://feeds.arstechnica.com/arstechnica/index
+        title: Ars Technica
+    BZF:
+        uri: http://www.buzzfeed.com/index.xml
+        title: BuzzFeed
+    CNT:
+        uri: http://www.cnet.com/rss/news/
+        title: CNet News
+
