@@ -136,4 +136,9 @@ feeds:
     CNT:
         uri: http://www.cnet.com/rss/news/
         title: CNet News
-
+    FBS:
+        uri: http://www.forbes.com/real-time/feed2/
+        title: Forbes - Latest headlines
+    REU:
+        uri: http://feeds.reuters.com/reuters/businessNews
+        title: Reuters - Business
