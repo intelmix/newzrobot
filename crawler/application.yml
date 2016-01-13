@@ -11,11 +11,9 @@ feeds:
     TNW:
         uri: http://feeds2.feedburner.com/thenextweb
         title: TheNextWeb
-    #hiring ad in source of the page
     GUA:
         uri: http://www.theguardian.com/uk/rss
         title: The Guardian
-    #hiring ad in source of the page
     IND:
         uri: http://www.independent.co.uk/rss
         title: Independent
