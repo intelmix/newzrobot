@@ -55,8 +55,6 @@ public class FeedCrawler {
     @Value("${mongodb.port}")
     private int mongodbPort;
 
-    private CappedCache cache = new CappedCache(25);
-
     /**
      * This method crawls in the feeds specified in application.yaml file and stores results in MongoDB.
      */
@@ -134,9 +132,14 @@ public class FeedCrawler {
                 feed_entry.insert(document);
                 counter++;
 
-                cache.addItem(epoch, document);
+                jedis.zadd("latest_news", epoch, "");
             }
         }
+
+        //clear old items from redis's "latest_news"
+        //remove items with lowest epoch from oldest one to the one
+        //at index 50 from highest one
+        jedis.zremrangeByScore("latest_news", 0, -50);
 
         logger.info(String.format("%d feed items saved into database (for %s).", counter, link));
 
