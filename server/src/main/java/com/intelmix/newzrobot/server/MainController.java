@@ -71,10 +71,6 @@ public class MainController {
         //TODO: replace usage of google access token with my own token
         redisUser.setAuthToken(access_token);
 
-        /*GoogleUser gu = new GoogleUser(user.getId(), user.getName(), user.getGivenName(), user.getFamilyName(), 
-                user.getLink(), user.getPicture(), user.getGender(), user.getLocale(), user.getEmail(), access_token);
-        userRepository.save(gu);
-*/
         //Sample response:
         //{
         // "id": "108051250147721565705",
@@ -107,7 +103,8 @@ public class MainController {
         //now we have to save information to db
         return new AuthResponse(access_token, 0);
     }
-
+    
+    //This method searches for the given query in the news and returns a list of matches
     @RequestMapping("/search/{query}")
     public List<NewsItem> search(@PathVariable("query") String query) {
         logger.info("Request received for search: "+query);
