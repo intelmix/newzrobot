@@ -140,3 +140,9 @@ feeds:
     REU:
         uri: http://feeds.reuters.com/reuters/businessNews
         title: Reuters - Business
+    FTU:
+        uri: http://www.ft.com/rss/home/us
+        title: Financial Times - US
+    FTE:
+        uri: http://www.ft.com/rss/home/europe
+        title: Financial Times - Europe
