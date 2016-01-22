@@ -121,6 +121,9 @@ public class MainController {
         return result;
     }
 
+    //return total number of the news in database
+    //this does not connect to MongoDB to get that number, instead uses
+    //cached number in redis which is updated by crawler
     @RequestMapping("/newsCount")
     public ResponseEntity<String> newsCount() {
         logger.info("Request received for news count");
