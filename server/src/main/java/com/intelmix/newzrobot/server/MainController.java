@@ -140,6 +140,7 @@ public class MainController {
         return new ResponseEntity<String>(String.valueOf(count), HttpStatus.OK);
     }
 
+    //this API returns latest 10 news articles from MongoDB
     @RequestMapping("/news")
     public List<NewsItem> news() {
         logger.info("Request received for news");
