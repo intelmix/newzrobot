@@ -28,9 +28,9 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties
 public class FeedConfig {
 
-    private Map<String, Map<String, String>> feeds = new HashMap<String, Map<String, String>>();
+    private Map<String, String> feeds = new HashMap<String, String>();
 
-    public Map<String, Map<String, String>> getFeeds() {
+    public Map<String, String> getFeeds() {
         return feeds;
     }
 

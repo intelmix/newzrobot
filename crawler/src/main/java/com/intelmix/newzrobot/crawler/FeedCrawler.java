@@ -55,6 +55,7 @@ public class FeedCrawler {
     @Value("${mongodb.port}")
     private int mongodbPort;
 
+    Jedis jedis;
     /**
      * This method crawls in the feeds specified in application.yaml file and stores results in MongoDB.
      */
@@ -64,13 +65,12 @@ public class FeedCrawler {
             MongoClient mongo = new MongoClient( mongodbServer , mongodbPort );
             DB db = mongo.getDB("data"); 
             DBCollection feed_entry = db.getCollection("feed_entry");
-            Jedis jedis = new Jedis("localhost");
+            jedis = new Jedis("localhost");
 
             Set<String> feedIds = cfg.getFeedIds();
 
             for(String id: feedIds) {
-                String link = cfg.getFeeds().get(id).get("uri");
-                String title = cfg.getFeeds().get(id).get("title");
+                String link = cfg.getFeeds().get(id);
 
                 long readCount = -1;
                 
