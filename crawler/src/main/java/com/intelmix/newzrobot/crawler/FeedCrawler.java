@@ -100,7 +100,7 @@ public class FeedCrawler {
      * Saves items of the given RSS feed into MongoDB. 
      */
     private long saveFeed(DBCollection feed_entry, String link, String source_id) throws com.rometools.rome.io.FeedException, java.io.IOException {
-        logger.info("Working on " + source_id);
+        logger.info(source_id + ": Processing...");
         URL feedUrl = new URL(link);
 
         SyndFeedInput input = new SyndFeedInput();
@@ -141,7 +141,7 @@ public class FeedCrawler {
         //at index 50 from highest one
         jedis.zremrangeByScore("latest_news", 0, -50);
 
-        logger.info(String.format("%d feed items saved into database (for %s).", counter, link));
+        logger.info(String.format("%s: Got %d feed items saved into database (for %s).", source_id, counter, link));
 
         return counter;
     }

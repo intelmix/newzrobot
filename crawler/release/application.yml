@@ -1,148 +1,50 @@
 feeds:
-    LAT:
-        uri: http://www.latimes.com/rss2.0.xml
-        title: LA Times
-    NYT:
-        uri: http://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml
-        title: New York Times
-    TCC:
-        uri: http://feeds.feedburner.com/TechCrunch/
-        title: TechCrunch
-    TNW:
-        uri: http://feeds2.feedburner.com/thenextweb
-        title: TheNextWeb
-    GUA:
-        uri: http://www.theguardian.com/uk/rss
-        title: The Guardian
-    IND:
-        uri: http://www.independent.co.uk/rss
-        title: Independent
-    TLG:
-        uri: http://www.telegraph.co.uk/rss
-        title: The Telegraph
-    GOG:
-        uri: https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&topic=h&num=3&output=rss
-        title: Google News
-    WPP:
-        uri: http://feeds.washingtonpost.com/rss/politics
-        title: Washington Post - Politics
-    WPW:
-        uri: http://feeds.washingtonpost.com/rss/world
-        title: Washingto Post - World
-    TVG:
-        uri: http://www.theverge.com/rss/full.xml
-        title: The Verge
-    #DML:
-    #    uri: http://www.dailymail.co.uk/articles.rss
-    #    title: Daily Mail
-    DMR:
-        uri: http://www.mirror.co.uk/rss.xml
-        title: Daily Mirror
-    USW:
-        uri: http://rssfeeds.usatoday.com/UsatodaycomWorld-TopStories
-        title: USA Today - World
-    USN:
-        uri: http://rssfeeds.usatoday.com/usatoday-NewsTopStories
-        title: YSA Today - Top
-    WSJ:
-        uri: http://www.wsj.com/xml/rss/3_7085.xml
-        title: WSJ - World News
-    NYD:
-        uri: http://feeds.nydailynews.com/nydnrss
-        title: New York - Daily News
-    NYO:
-        uri: http://nypost.com/feed/
-        title: New York Post
-    CHT:
-        uri: http://www.chicagotribune.com/rss2.0.xml
-        title: ChicagoTribune
-    NWD:
-        uri: http://www.newsday.com/xml/newsday-com-top-stories-1.1324249
-        title: NewsDay
-    CHR:
-        uri: http://www.chron.com/rss/feed/News-270.php
-        title: Chron
-    TSD:
-        uri: http://www.thesundaily.my/rss/latest
-        title: The Sun Daily 
-    GGW:
-        uri: http://feeds.feedburner.com/GoogleforWork
-        title: Google for work blog
-    ENG:
-        uri: http://www.engadget.com/rss.xml
-        title: Engadget
-    ITB:
-        uri: http://www.itbusinessedge.com/feeds
-        title: IT Business edge
-    MSH:
-        uri: http://feeds.mashable.com/Mashable
-        title: Mashable
-    GGO:
-        uri: http://gigaom.com/feed/
-        title: GigaOM
-    #ZDN:
-    #    uri: http://www.zdnet.com/rssfeeds/
-    #    title: ZDNet
-    RDW:
-        uri: http://readwrite.com/.rss/excerpt/
-        title: ReadWrite
-    TCI:
-        uri: http://www.techinsider.io/rss
-        title: Techinsider
-    HUF:
-        uri: http://feeds.huffingtonpost.com/c/35496/f/677045/index.rss
-        title: Huffington Post
-    FOX:
-        uri: http://feeds.foxnews.com/foxnews/latest
-        title: FoxNews
-    NBC:
-        uri: http://feeds.nbcnews.com/feeds/topstories
-        title: NBC
-    ABC:
-        uri: http://feeds.abcnews.com/abcnews/topstories
-        title: ABC - Top Stories
-    ABI:
-        uri: http://feeds.abcnews.com/abcnews/internationalheadlines
-        title: ABC - International Headlines
-    BBC:
-        uri: http://feeds.bbci.co.uk/news/rss.xml?edition=uk
-        title: BBC - UK
-    BBW:
-        uri: http://feeds.bbci.co.uk/news/world/rss.xml
-        title: BBC - World
-    WIR:
-        uri: http://feeds.wired.com/wired/index
-        title: Wired Top Stories
-    TC2:
-        uri: http://tech.firstpost.com/feed
-        title: Tech2
-    GIZ:
-        uri: http://gizmodo.com/rss
-        title: Gizmodo
-    DIT:
-        uri: http://www.digitaltrends.com/feed/
-        title: DigitalTrends
-    TCR:
-        uri: http://feeds2.feedburner.com/techradar/allnews
-        title: TechRadar
-    ARS:
-        uri: http://feeds.arstechnica.com/arstechnica/index
-        title: Ars Technica
-    BZF:
-        uri: http://www.buzzfeed.com/index.xml
-        title: BuzzFeed
-    CNT:
-        uri: http://www.cnet.com/rss/news/
-        title: CNet News
-    FBS:
-        uri: http://www.forbes.com/real-time/feed2/
-        title: Forbes - Latest headlines
-    REU:
-        uri: http://feeds.reuters.com/reuters/businessNews
-        title: Reuters - Business
-    FTU:
-        uri: http://www.ft.com/rss/home/us
-        title: Financial Times - US
-    FTE:
-        uri: http://www.ft.com/rss/home/europe
-        title: Financial Times - Europe
+    LAT: http://www.latimes.com/rss2.0.xml
+    NYT: http://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml
+    TCC: http://feeds.feedburner.com/TechCrunch/
+    TNW: http://feeds2.feedburner.com/thenextweb
+    GUA: http://www.theguardian.com/uk/rss
+    IND: http://www.independent.co.uk/rss
+    TLG: http://www.telegraph.co.uk/rss
+    GOG: https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&topic=h&num=3&output=rss
+    WPP: http://feeds.washingtonpost.com/rss/politics
+    WPW: http://feeds.washingtonpost.com/rss/world
+    TVG: http://www.theverge.com/rss/full.xml
+    #DML: uri: http://www.dailymail.co.uk/articles.rss
+    DMR: http://www.mirror.co.uk/rss.xml
+    USW: http://rssfeeds.usatoday.com/UsatodaycomWorld-TopStories
+    USN: http://rssfeeds.usatoday.com/usatoday-NewsTopStories
+    WSJ: http://www.wsj.com/xml/rss/3_7085.xml
+    NYD: http://feeds.nydailynews.com/nydnrss
+    NYO: http://nypost.com/feed/
+    CHT: http://www.chicagotribune.com/rss2.0.xml
+    NWD: http://www.newsday.com/xml/newsday-com-top-stories-1.1324249
+    CHR: http://www.chron.com/rss/feed/News-270.php
+    TSD: http://www.thesundaily.my/rss/latest
+    GGW: http://feeds.feedburner.com/GoogleforWork
+    ENG: http://www.engadget.com/rss.xml
+    ITB: http://www.itbusinessedge.com/feeds
+    MSH: http://feeds.mashable.com/Mashable
+    GGO: http://gigaom.com/feed/
+    #ZDN: uri: http://www.zdnet.com/rssfeeds/
+    RDW: http://readwrite.com/.rss/excerpt/
+    TCI: http://www.techinsider.io/rss
+    HUF: http://feeds.huffingtonpost.com/c/35496/f/677045/index.rss
+    FOX: http://feeds.foxnews.com/foxnews/latest
+    NBC: http://feeds.nbcnews.com/feeds/topstories
+    ABC: http://feeds.abcnews.com/abcnews/topstories
+    ABI: http://feeds.abcnews.com/abcnews/internationalheadlines
+    BBC: http://feeds.bbci.co.uk/news/rss.xml?edition=uk
+    BBW: http://feeds.bbci.co.uk/news/world/rss.xml
+    WIR: http://feeds.wired.com/wired/index
+    TC2: http://tech.firstpost.com/feed
+    GIZ: http://gizmodo.com/rss
+    DIT: http://www.digitaltrends.com/feed/
+    TCR: http://feeds2.feedburner.com/techradar/allnews
+    ARS: http://feeds.arstechnica.com/arstechnica/index
+    BZF: http://www.buzzfeed.com/index.xml
+    CNT: http://www.cnet.com/rss/news/
+    FBS: http://www.forbes.com/real-time/feed2/
+    REU: http://feeds.reuters.com/reuters/businessNews
+    FTU: http://www.ft.com/rss/home/us
+    FTE: http://www.ft.com/rss/home/europe
