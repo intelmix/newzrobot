@@ -1,3 +1,50 @@
 feeds:
     LAT: http://www.latimes.com/rss2.0.xml
     NYT: http://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml
+    TCC: http://feeds.feedburner.com/TechCrunch/
+    TNW: http://feeds2.feedburner.com/thenextweb
+    GUA: http://www.theguardian.com/uk/rss
+    IND: http://www.independent.co.uk/rss
+    TLG: http://www.telegraph.co.uk/rss
+    GOG: https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&topic=h&num=3&output=rss
+    WPP: http://feeds.washingtonpost.com/rss/politics
+    WPW: http://feeds.washingtonpost.com/rss/world
+    TVG: http://www.theverge.com/rss/full.xml
+    #DML: uri: http://www.dailymail.co.uk/articles.rss
+    DMR: http://www.mirror.co.uk/rss.xml
+    USW: http://rssfeeds.usatoday.com/UsatodaycomWorld-TopStories
+    USN: http://rssfeeds.usatoday.com/usatoday-NewsTopStories
+    WSJ: http://www.wsj.com/xml/rss/3_7085.xml
+    NYD: http://feeds.nydailynews.com/nydnrss
+    NYO: http://nypost.com/feed/
+    CHT: http://www.chicagotribune.com/rss2.0.xml
+    NWD: http://www.newsday.com/xml/newsday-com-top-stories-1.1324249
+    CHR: http://www.chron.com/rss/feed/News-270.php
+    TSD: http://www.thesundaily.my/rss/latest
+    GGW: http://feeds.feedburner.com/GoogleforWork
+    ENG: http://www.engadget.com/rss.xml
+    ITB: http://www.itbusinessedge.com/feeds
+    MSH: http://feeds.mashable.com/Mashable
+    GGO: http://gigaom.com/feed/
+    #ZDN: uri: http://www.zdnet.com/rssfeeds/
+    RDW: http://readwrite.com/.rss/excerpt/
+    TCI: http://www.techinsider.io/rss
+    HUF: http://feeds.huffingtonpost.com/c/35496/f/677045/index.rss
+    FOX: http://feeds.foxnews.com/foxnews/latest
+    NBC: http://feeds.nbcnews.com/feeds/topstories
+    ABC: http://feeds.abcnews.com/abcnews/topstories
+    ABI: http://feeds.abcnews.com/abcnews/internationalheadlines
+    BBC: http://feeds.bbci.co.uk/news/rss.xml?edition=uk
+    BBW: http://feeds.bbci.co.uk/news/world/rss.xml
+    WIR: http://feeds.wired.com/wired/index
+    TC2: http://tech.firstpost.com/feed
+    GIZ: http://gizmodo.com/rss
+    DIT: http://www.digitaltrends.com/feed/
+    TCR: http://feeds2.feedburner.com/techradar/allnews
+    ARS: http://feeds.arstechnica.com/arstechnica/index
+    BZF: http://www.buzzfeed.com/index.xml
+    CNT: http://www.cnet.com/rss/news/
+    FBS: http://www.forbes.com/real-time/feed2/
+    REU: http://feeds.reuters.com/reuters/businessNews
+    FTU: http://www.ft.com/rss/home/us
+    FTE: http://www.ft.com/rss/home/europe
