@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -34,144 +35,150 @@ import com.intelmix.newzrobot.server.data.*;
 
 @RestController
 public class MainController {
-    private final Logger1 logger = LoggerFactory.getLogger(this.getClass()); 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass()); 
+    private RestTemplate restTemplate = null;
 
     /** 
      * Login an existing user or register a new user, returns an authorization token which will be used in future requests.
      */
     @RequestMapping(value="/auth", method = RequestMethod.POST)
-    public AuthResponse auth(@RequestBody AuthRequest req) {
-        String access_token = req.getToken();
-        String claimed_email = req.getEmail();
-        
-        logger.info("Register request received: "+access_token+" for email "+claimed_email);
+        public AuthResponse auth(@RequestBody AuthRequest req) {
+            String access_token = req.getToken();
+            String claimed_email = req.getEmail();
 
-        //TODO: cache this
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-        APIUser user = restTemplate.getForObject("https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + access_token, APIUser.class);
+            logger.info("Register request received: "+access_token+" for email "+claimed_email);
 
-        logger.info("Got API response. name is " + user.getName());
-        logger.info("Got API response. email is " + user.getEmail());
-
-        if ( !user.getEmail().equals(claimed_email) ) {
-            return new AuthResponse(null, -1);  //email is not valid
-            //TODO: check above code in the client side
-        }
-
-        RedisUser redisUser = new RedisUser(user.getEmail());
-        boolean exists = redisUser.exists();
-
-        logger.info("Exists? "+String.valueOf(exists));
-
-        //TODO: check validity of this token
-        //Here we create/update user information in Redis
-        redisUser.initialize(user);
-
-        //TODO: replace usage of google access token with my own token
-        redisUser.setAuthToken(access_token);
-
-        //Sample response:
-        //{
-        // "id": "108051250147721565705",
-        //  "name": "Mahdi Mohammadi",
-        //   "given_name": "Mahdi",
-        //    "family_name": "Mohammadi",
-        //     "link": "https://plus.google.com/+MahdiMohammadinasab",
-        //      "picture": "https://lh3.googleusercontent.com/-SAD9UVfwQZU/AAAAAAAAAAI/AAAAAAAAAMA/r-4abH4SfD8/photo.jpg",
-        //       "gender": "male",
-        //       "email" : "dsadsadsA",
-        //        "locale": "en"
-        //        }
-        //}
-        //
-
-        //TODO: make sure this token is issues for my application by clling: https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=?
-        //expected result:
-        //{
-        //  "issued_to": "407408718192.apps.googleusercontent.com", 
-        //    "user_id": "108051250147721565705", 
-        //      "expires_in": 3573,  #is in seconds
-        //        "access_type": "offline", 
-        //          "audience": "407408718192.apps.googleusercontent.com", 
-        //            "scope": "https://www.googleapis.com/auth/userinfo.profile"
-        //            }
-        //}
-        //
-        
-        
-        //now we have to save information to db
-        return new AuthResponse(access_token, 0);
-    }
-    
-    //This method searches for the given query in the news and returns a list of matches
-    @RequestMapping("/search/{query}")
-    public List<NewsItem> search(@PathVariable("query") String query) {
-        logger.info("Request received for search: "+query);
-
-        List<NewsItem> allNews = news();
-        List<NewsItem> result = new ArrayList<NewsItem>();
-
-        for(int i=0;i<allNews.size();i++) {
-            if ( allNews.get(i).getTitle().contains(query) ) {
-                result.add(allNews.get(i));
+            if ( restTemplate == null ) {
+                restTemplate = new RestTemplate();
+                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
             }
-        }
 
-        return result;
-    }
+            //TODO: make sure this token is issues for my application by clling: https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=?
+            //expected result:
+            //{
+            //  "issued_to": "407408718192.apps.googleusercontent.com", 
+            //    "user_id": "108051250147721565705", 
+            //      "expires_in": 3573,  #is in seconds
+            //        "access_type": "offline", 
+            //          "audience": "407408718192.apps.googleusercontent.com", 
+            //            "scope": "https://www.googleapis.com/auth/userinfo.profile"
+            //            }
+            //}
+            //
+            logger.info("making call..."+access_token);
+            Map<String, String> tokenInfo = restTemplate.getForObject("https://www.googleapis.com/oauth2/v1/tokeninfo?access_token="+access_token, Map.class);
+            logger.info("result user_scope is "+tokenInfo.get("user_scope"));
 
-    //return total number of the news in database
-    //this does not connect to MongoDB to get that number, instead uses
-    //cached number in redis which is updated by crawler
-    @RequestMapping("/newsCount")
-    public ResponseEntity<String> newsCount() {
-        logger.info("Request received for news count");
-        
-        List<NewsItem> result = new ArrayList<NewsItem>();
-        DBCursor cursor = null;
 
-        Jedis jedis = new Jedis("localhost");
+            APIUser user = restTemplate.getForObject("https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + access_token, APIUser.class);
 
-        String count = jedis.get("news_count");
+            logger.info("Got API response. name is " + user.getName());
+            logger.info("Got API response. email is " + user.getEmail());
 
-        if ( count == null ) count = "0";
-
-        return new ResponseEntity<String>(String.valueOf(count), HttpStatus.OK);
-    }
-
-    //this API returns latest 10 news articles from MongoDB
-    @RequestMapping("/news")
-    public List<NewsItem> news() {
-        logger.info("Request received for news");
-
-        List<NewsItem> result = new ArrayList<NewsItem>();
-        DBCursor cursor = null;
-
-        try {
-            MongoClient mongo = new MongoClient( "localhost" , 27017 );
-            DB db = mongo.getDB("data"); 
-            DBCollection feed_entry = db.getCollection("feed_entry");
-
-            cursor = feed_entry.find();
-            int counter = 0;
-            while(cursor.hasNext() && counter < 10) {
-                counter++;
-
-                BasicDBObject doc = (BasicDBObject)cursor.next();
-                NewsItem ni = new NewsItem(doc.getString("txt"), doc.getString("src"), doc.getString("uri"), doc.getLong("epo"));
-
-                result.add(ni);
+            if ( !user.getEmail().equals(claimed_email) ) {
+                return new AuthResponse(null, -1);  //email is not valid
+                //TODO: check above code in the client side
             }
-        } catch(java.net.UnknownHostException ex) {
-            logger.error("unknown host exception: "+ex.getMessage());
-        } finally {
-            if(cursor != null) cursor.close();
-        }
 
-        return result;
+            RedisUser redisUser = new RedisUser(user.getEmail());
+            boolean exists = redisUser.exists();
+
+            logger.info("Exists? "+String.valueOf(exists));
+
+            //TODO: check validity of this token
+            //Here we create/update user information in Redis
+            redisUser.initialize(user);
+
+            //TODO: replace usage of google access token with my own token
+            redisUser.setAuthToken(access_token);
+
+            //Sample response:
+            //{
+            // "id": "108051250147721565705",
+            // "name": "Mahdi Mohammadi",
+            // "given_name": "Mahdi",
+            // "family_name": "Mohammadi",
+            // "link": "https://plus.google.com/+MahdiMohammadinasab",
+            // "picture": "https://lh3.googleusercontent.com/-SAD9UVfwQZU/AAAAAAAAAAI/AAAAAAAAAMA/r-4abH4SfD8/photo.jpg",
+            // "gender": "male",
+            // "email" : "dsadsadsA",
+            // "locale": "en"
+            //}
+            //
+
+
+            //now we have to save information to db
+            return new AuthResponse(access_token, 0);
+}
+
+//This method searches for the given query in the news and returns a list of matches
+@RequestMapping("/search/{query}")
+public List<NewsItem> search(@PathVariable("query") String query) {
+    logger.info("Request received for search: "+query);
+
+    List<NewsItem> allNews = news();
+    List<NewsItem> result = new ArrayList<NewsItem>();
+
+    for(int i=0;i<allNews.size();i++) {
+        if ( allNews.get(i).getTitle().contains(query) ) {
+            result.add(allNews.get(i));
+        }
     }
-    
+
+    return result;
+}
+
+//return total number of the news in database
+//this does not connect to MongoDB to get that number, instead uses
+//cached number in redis which is updated by crawler
+@RequestMapping("/newsCount")
+public ResponseEntity<String> newsCount() {
+    logger.info("Request received for news count");
+
+    List<NewsItem> result = new ArrayList<NewsItem>();
+    DBCursor cursor = null;
+
+    Jedis jedis = new Jedis("localhost");
+
+    String count = jedis.get("news_count");
+
+    if ( count == null ) count = "0";
+
+    return new ResponseEntity<String>(String.valueOf(count), HttpStatus.OK);
+}
+
+//this API returns latest 10 news articles from MongoDB
+@RequestMapping("/news")
+public List<NewsItem> news() {
+    logger.info("Request received for news");
+
+    List<NewsItem> result = new ArrayList<NewsItem>();
+    DBCursor cursor = null;
+
+    try {
+        MongoClient mongo = new MongoClient( "localhost" , 27017 );
+        DB db = mongo.getDB("data"); 
+        DBCollection feed_entry = db.getCollection("feed_entry");
+
+        cursor = feed_entry.find();
+        int counter = 0;
+        while(cursor.hasNext() && counter < 10) {
+            counter++;
+
+            BasicDBObject doc = (BasicDBObject)cursor.next();
+            NewsItem ni = new NewsItem(doc.getString("txt"), doc.getString("src"), doc.getString("uri"), doc.getLong("epo"));
+
+            result.add(ni);
+        }
+    } catch(java.net.UnknownHostException ex) {
+        logger.error("unknown host exception: "+ex.getMessage());
+    } finally {
+        if(cursor != null) cursor.close();
+    }
+
+    return result;
+}
+
 
 }
 
